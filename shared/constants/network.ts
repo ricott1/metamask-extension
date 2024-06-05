@@ -147,16 +147,8 @@ export const CHAIN_IDS = {
   WETHIO: '0x4e',
   CHZ: '0x15b38',
   NUMBERS: '0x290b',
-  SEI: '0x531',
-  APE_TESTNET: '0x8157',
-  APE_MAINNET: '0x8173',
-  BERACHAIN: '0x138d5',
-  METACHAIN_ONE: '0x1b6e6',
-  ARBITRUM_SEPOLIA: '0x66eee',
-  NEAR: '0x18d',
-  NEAR_TESTNET: '0x18e',
-  GRAVITY_ALPHA_MAINNET: '0x659',
-  GRAVITY_ALPHA_TESTNET_SEPOLIA: '0x34c1',
+  LISK: '0x46f',
+  LISK_SEPOLIA: '0x106a',
 } as const;
 
 export const CHAINLIST_CHAIN_IDS_MAP = {
@@ -262,8 +254,7 @@ export const MOONRIVER_DISPLAY_NAME = 'Moonriver';
 export const SCROLL_DISPLAY_NAME = 'Scroll';
 export const SCROLL_SEPOLIA_DISPLAY_NAME = 'Scroll Sepolia';
 export const OP_BNB_DISPLAY_NAME = 'opBNB';
-export const BERACHAIN_DISPLAY_NAME = 'Berachain Artio';
-export const METACHAIN_ONE_DISPLAY_NAME = 'Metachain One Mainnet';
+export const LISK_DISPLAY_NAME = 'Lisk';
 
 export const infuraProjectId = process.env.INFURA_PROJECT_ID;
 export const getRpcUrl = ({
@@ -378,8 +369,7 @@ const CHAINLIST_CURRENCY_SYMBOLS_MAP = {
   OASYS_MAINNET: 'OAS',
   HUOBI_ECO_CHAIN_MAINNET: 'HT',
   ACALA_NETWORK: 'ACA',
-  IOTEX_MAINNET: 'IOTX',
-  APE: 'APE',
+  LISK: 'ETH',
 } as const;
 
 export const CHAINLIST_CURRENCY_SYMBOLS_MAP_NETWORK_COLLISION = {
@@ -457,11 +447,7 @@ export const FILECOIN_MAINNET_IMAGE_URL = './images/filecoin.svg';
 export const SCROLL_IMAGE_URL = './images/scroll.svg';
 export const NUMBERS_MAINNET_IMAGE_URL = './images/numbers-mainnet.svg';
 export const NUMBERS_TOKEN_IMAGE_URL = './images/numbers-token.png';
-export const SEI_IMAGE_URL = './images/sei.svg';
-export const NEAR_IMAGE_URL = './images/near.svg';
-export const APE_IMAGE_URL = './images/ape.svg';
-export const GRAVITY_ALPHA_MAINNET_IMAGE_URL = './images/gravity.svg';
-export const GRAVITY_ALPHA_TESTNET_SEPOLIA_IMAGE_URL = './images/gravity.svg';
+export const LISK_IMAGE_URL = './images/lisk.svg';
 
 export const INFURA_PROVIDER_TYPES = [
   NETWORK_TYPES.MAINNET,
@@ -569,9 +555,7 @@ export const NETWORK_TO_NAME_MAP = {
   [CHAIN_IDS.SCROLL_SEPOLIA]: SCROLL_SEPOLIA_DISPLAY_NAME,
   [CHAIN_IDS.SEPOLIA]: SEPOLIA_DISPLAY_NAME,
   [CHAIN_IDS.OPBNB]: OP_BNB_DISPLAY_NAME,
-  [CHAIN_IDS.ZKSYNC_ERA]: ZK_SYNC_ERA_DISPLAY_NAME,
-  [CHAIN_IDS.BERACHAIN]: BERACHAIN_DISPLAY_NAME,
-  [CHAIN_IDS.METACHAIN_ONE]: METACHAIN_ONE_DISPLAY_NAME,
+  [CHAIN_IDS.LISK]: LISK_DISPLAY_NAME,
 } as const;
 
 export const CHAIN_ID_TO_CURRENCY_SYMBOL_MAP = {
@@ -799,11 +783,7 @@ export const CHAIN_ID_TO_NETWORK_IMAGE_URL_MAP = {
   [CHAINLIST_CHAIN_IDS_MAP.APE_MAINNET]: APE_IMAGE_URL,
   [CHAINLIST_CHAIN_IDS_MAP.BASE]: BASE_TOKEN_IMAGE_URL,
   [CHAINLIST_CHAIN_IDS_MAP.NUMBERS]: NUMBERS_MAINNET_IMAGE_URL,
-  [CHAINLIST_CHAIN_IDS_MAP.SEI]: SEI_IMAGE_URL,
-  [CHAINLIST_CHAIN_IDS_MAP.GRAVITY_ALPHA_MAINNET]:
-    GRAVITY_ALPHA_MAINNET_IMAGE_URL,
-  [CHAINLIST_CHAIN_IDS_MAP.GRAVITY_ALPHA_TESTNET_SEPOLIA]:
-    GRAVITY_ALPHA_TESTNET_SEPOLIA_IMAGE_URL,
+  [CHAINLIST_CHAIN_IDS_MAP.LISK]: LISK_IMAGE_URL,
 } as const;
 
 export const CHAIN_ID_TO_ETHERS_NETWORK_NAME_MAP = {
@@ -956,10 +936,44 @@ export const UNSUPPORTED_RPC_METHODS = new Set([
 
 export const IPFS_DEFAULT_GATEWAY_URL = 'dweb.link';
 
-export const FEATURED_RPCS: AddNetworkFields[] = [
-  {
-    chainId: CHAIN_IDS.LINEA_MAINNET,
-    name: LINEA_MAINNET_DISPLAY_NAME,
+// The first item in transakCurrencies must be the
+// default crypto currency for the network
+const BUYABLE_CHAIN_ETHEREUM_NETWORK_NAME = 'ethereum';
+
+export const BUYABLE_CHAINS_MAP: {
+  [K in Exclude<
+    ChainId,
+    | typeof CHAIN_IDS.LOCALHOST
+    | typeof CHAIN_IDS.OPTIMISM_TESTNET
+    | typeof CHAIN_IDS.OPTIMISM_GOERLI
+    | typeof CHAIN_IDS.BASE_TESTNET
+    | typeof CHAIN_IDS.OPBNB_TESTNET
+    | typeof CHAIN_IDS.OPBNB
+    | typeof CHAIN_IDS.BSC_TESTNET
+    | typeof CHAIN_IDS.POLYGON_TESTNET
+    | typeof CHAIN_IDS.AVALANCHE_TESTNET
+    | typeof CHAIN_IDS.FANTOM_TESTNET
+    | typeof CHAIN_IDS.MOONBEAM_TESTNET
+    | typeof CHAIN_IDS.LINEA_GOERLI
+    | typeof CHAIN_IDS.LINEA_SEPOLIA
+    | typeof CHAIN_IDS.GOERLI
+    | typeof CHAIN_IDS.SEPOLIA
+    | typeof CHAIN_IDS.GNOSIS
+    | typeof CHAIN_IDS.AURORA
+    | typeof CHAIN_IDS.ARBITRUM_GOERLI
+    | typeof CHAIN_IDS.BLAST
+    | typeof CHAIN_IDS.FILECOIN
+    | typeof CHAIN_IDS.POLYGON_ZKEVM
+    | typeof CHAIN_IDS.SCROLL
+    | typeof CHAIN_IDS.SCROLL_SEPOLIA
+    | typeof CHAIN_IDS.WETHIO
+    | typeof CHAIN_IDS.CHZ
+    | typeof CHAIN_IDS.NUMBERS
+    | typeof CHAIN_IDS.LISK
+    | typeof CHAIN_IDS.LISK_SEPOLIA
+  >]: BuyableChainSettings;
+} = {
+  [CHAIN_IDS.MAINNET]: {
     nativeCurrency: CURRENCY_SYMBOLS.ETH,
     rpcEndpoints: [
       {
@@ -1068,6 +1082,16 @@ export const FEATURED_RPCS: AddNetworkFields[] = [
     defaultRpcEndpointIndex: 0,
     blockExplorerUrls: ['https://basescan.org'],
     defaultBlockExplorerUrlIndex: 0,
+  },
+  {
+    chainId: CHAIN_IDS.LISK,
+    nickname: LISK_DISPLAY_NAME,
+    rpcUrl: `https://rpc.api.lisk.com`,
+    ticker: CURRENCY_SYMBOLS.ETH,
+    rpcPrefs: {
+      blockExplorerUrl: 'https://blockscout.lisk.com',
+      imageUrl: LISK_IMAGE_URL,
+    },
   },
 ];
 
